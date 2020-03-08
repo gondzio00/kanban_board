@@ -3,11 +3,13 @@
 namespace KanbanBoard;
 
 use Github\Client;
+use GithubClient;
 use vierbergenlars\SemVer\version;
 
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\SemVerException;
 use \Michelf\Markdown;
+use phpDocumentor\Reflection\Types\Array_;
 
 class Application
 {
@@ -15,14 +17,14 @@ class Application
 	private $repositories;
 	private $paused_labels;
 
-	public function __construct($github, $repositories, $paused_labels = array())
+	public function __construct(GithubClient $github, Array $repositories, Array $paused_labels = array())
 	{
 		$this->github = $github;
 		$this->repositories = $repositories;
 		$this->paused_labels = $paused_labels;
 	}
 
-	public function board()
+	public function board() : Array
 	{
 		$ms = array();
 		foreach ($this->repositories as $repository) {
@@ -49,7 +51,7 @@ class Application
 		return $milestones;
 	}
 
-	private function issues($repository, $milestone_id)
+	private function issues(string $repository,string $milestone_id) : Array
 	{
 		$issues = array(
 			'active' => array(),
@@ -83,7 +85,7 @@ class Application
 		return $issues;
 	}
 
-	private static function _state($issue)
+	private static function _state(array $issue) : String
 	{
 		if ($issue['state'] === 'closed')
 			return 'completed';
@@ -93,7 +95,7 @@ class Application
 			return 'queued';
 	}
 
-	private static function labels_match($issue, $needles)
+	private static function labels_match(array $issue, array $needles) : Array
 	{
 		if (Utilities::hasValue($issue, 'labels')) {
 			foreach ($issue['labels'] as $label) {
@@ -105,7 +107,7 @@ class Application
 		return array();
 	}
 
-	private static function _percent($complete, $remaining)
+	private static function _percent(int $complete, int $remaining) : Array
 	{
 		$total = $complete + $remaining;
 		if ($total > 0) {
