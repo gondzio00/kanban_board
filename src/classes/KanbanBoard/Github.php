@@ -6,7 +6,7 @@ class GithubClient
     private $milestone_api;
     private $account;
 
-    public function __construct($token, $account)
+    public function __construct(string $token,string $account)
     {
         require '../../vendor/autoload.php';
         $this->account = $account;
@@ -15,12 +15,12 @@ class GithubClient
         $this->milestone_api = $this->client->api('issues')->milestones();
     }
 
-    public function milestones($repository)
+    public function milestones(string $repository) : array
     {
         return $this->milestone_api->all($this->account, $repository);
     }
 
-    public function issues($repository, $milestone_id)
+    public function issues(string $repository, int $milestone_id) : array
     {
         $issue_parameters = array('milestone' => $milestone_id, 'state' => 'all');
         return $this->client->api('issue')->all($this->account, $repository, $issue_parameters);
