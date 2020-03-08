@@ -17,10 +17,7 @@ class GithubClient
 
     public function milestones($repository)
     {
-        if(Utilities::hasValue($this->milestone_api, $repository))
             return $this->milestone_api->all($this->account, $repository);
-        //else
-            //throw new Exception("Repository : ".$repository." doesn't exist");
     }
 
     public function issues($repository, $milestone_id)
