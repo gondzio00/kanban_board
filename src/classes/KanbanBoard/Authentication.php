@@ -2,22 +2,40 @@
 namespace KanbanBoard;
 use KanbanBoard\Utilities;
 
+/**
+ * Login
+ */
 class Login {
 
 	private $client_id = NULL;
 	private $client_secret = NULL;
-
+	
+	/**
+	 * __construct
+	 *
+	 * @return void
+	 */
 	public function __construct()
 	{
 		$this->client_id = Utilities::env('GH_CLIENT_ID');
 		$this->client_secret = Utilities::env('GH_CLIENT_SECRET');
 	}
-
+	
+	/**
+	 * logout
+	 *
+	 * @return void
+	 */
 	public function logout() : void
 	{
 		unset($_SESSION['gh-token']);
 	}
-
+	
+	/**
+	 * login
+	 *
+	 * @return string
+	 */
 	public function login() : string
 	{
 		session_start();
@@ -41,7 +59,12 @@ class Login {
 		$_SESSION['gh-token'] = $token;
 		return $token;
 	}
-
+	
+	/**
+	 * _redirectToGithub
+	 *
+	 * @return void
+	 */
 	private function _redirectToGithub() : void
 	{
 		$url = 'Location: https://github.com/login/oauth/authorize';
@@ -51,8 +74,14 @@ class Login {
 		header($url);
 		exit();
 	}
-
-	private function _returnsFromGithub(string $code) : array
+	
+	/**
+	 * _returnsFromGithub
+	 *
+	 * @param  mixed $code
+	 * @return void
+	 */
+	private function _returnsFromGithub($code)
 	{
 		$url = 'https://github.com/login/oauth/access_token';
 		$data = array(

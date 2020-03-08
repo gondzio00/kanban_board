@@ -11,19 +11,35 @@ use vierbergenlars\SemVer\SemVerException;
 use \Michelf\Markdown;
 use phpDocumentor\Reflection\Types\Array_;
 
+/**
+ * Application
+ */
 class Application
 {
 	private $github;
 	private $repositories;
 	private $paused_labels;
-
+	
+	/**
+	 * __construct
+	 *
+	 * @param  mixed $github
+	 * @param  mixed $repositories
+	 * @param  mixed $paused_labels
+	 * @return void
+	 */
 	public function __construct(GithubClient $github, Array $repositories, Array $paused_labels = array())
 	{
 		$this->github = $github;
 		$this->repositories = $repositories;
 		$this->paused_labels = $paused_labels;
 	}
-
+	
+	/**
+	 * board
+	 *
+	 * @return Array
+	 */
 	public function board() : Array
 	{
 		$ms = array();
@@ -50,7 +66,14 @@ class Application
 		}
 		return $milestones;
 	}
-
+	
+	/**
+	 * issues
+	 *
+	 * @param  mixed $repository
+	 * @param  mixed $milestone_id
+	 * @return Array
+	 */
 	private function issues(string $repository,string $milestone_id) : Array
 	{
 		$issues = array(
@@ -84,7 +107,13 @@ class Application
 
 		return $issues;
 	}
-
+	
+	/**
+	 * _state
+	 *
+	 * @param  mixed $issue
+	 * @return String
+	 */
 	private static function _state(array $issue) : String
 	{
 		if ($issue['state'] === 'closed')
@@ -94,7 +123,14 @@ class Application
 		else
 			return 'queued';
 	}
-
+	
+	/**
+	 * labels_match
+	 *
+	 * @param  mixed $issue
+	 * @param  mixed $needles
+	 * @return Array
+	 */
 	private static function labels_match(array $issue, array $needles) : Array
 	{
 		if (Utilities::hasValue($issue, 'labels')) {
@@ -106,7 +142,14 @@ class Application
 		}
 		return array();
 	}
-
+	
+	/**
+	 * _percent
+	 *
+	 * @param  mixed $complete
+	 * @param  mixed $remaining
+	 * @return Array
+	 */
 	private static function _percent(int $complete, int $remaining) : Array
 	{
 		$total = $complete + $remaining;
