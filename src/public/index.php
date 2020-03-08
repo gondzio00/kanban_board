@@ -1,4 +1,5 @@
 <?php
+
 use KanbanBoard\Authentication;
 use KanbanBoard\GithubActual;
 use KanbanBoard\Utilities;
