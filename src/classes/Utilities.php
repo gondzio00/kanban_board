@@ -6,7 +6,8 @@ class Utilities
 	private function __construct() {
 	}
 
-	public static function env($name, $default = NULL) {
+	public static function env(string $name, string $default = NULL) : string
+	{
 		$value = getenv($name);
 		if($default !== NULL) {
 			if(!empty($value))
@@ -16,11 +17,13 @@ class Utilities
 		return (empty($value) && $default === NULL) ? die('Environment variable ' . $name . ' not found or has no value') : $value;
 	}
 
-	public static function hasValue($array, $key) {
+	public static function hasValue(array $array, string $key) : bool
+	{
 		return is_array($array) && array_key_exists($key, $array) && !empty($array[$key]);
 	}
 
-	public static function dump($data) {
+	public static function dump(array $data) : void
+	{
 		echo '<pre>';
 		var_dump($data);
 		echo '</pre>';
