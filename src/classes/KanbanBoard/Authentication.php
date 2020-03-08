@@ -13,12 +13,12 @@ class Login {
 		$this->client_secret = Utilities::env('GH_CLIENT_SECRET');
 	}
 
-	public function logout()
+	public function logout() : void
 	{
 		unset($_SESSION['gh-token']);
 	}
 
-	public function login()
+	public function login() : string
 	{
 		session_start();
 		$token = NULL;
@@ -42,7 +42,7 @@ class Login {
 		return $token;
 	}
 
-	private function _redirectToGithub()
+	private function _redirectToGithub() : void
 	{
 		$url = 'Location: https://github.com/login/oauth/authorize';
 		$url .= '?client_id=' . $this->client_id;
@@ -52,7 +52,7 @@ class Login {
 		exit();
 	}
 
-	private function _returnsFromGithub($code)
+	private function _returnsFromGithub(string $code) : array
 	{
 		$url = 'https://github.com/login/oauth/access_token';
 		$data = array(
