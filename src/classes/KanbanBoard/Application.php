@@ -22,8 +22,7 @@ class Application {
 		$ms = array();
 		foreach ($this->repositories as $repository)
 		{
-			$milestones = $this->github->milestones($repository);
-				foreach ($milestones as $data)
+				foreach ($this->github->milestones($repository) as $data)
 				{
 					$ms[$data['title']] = $data;
 					$ms[$data['title']]['repository'] = $repository;
