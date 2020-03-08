@@ -23,19 +23,13 @@ class Application {
 		foreach ($this->repositories as $repository)
 		{
 			$milestones = $this->github->milestones($repository);
-
-			if(count($milestones) > 0)
-			{
 				foreach ($milestones as $data)
 				{
 					$ms[$data['title']] = $data;
 					$ms[$data['title']]['repository'] = $repository;
 				}
-			}
-			else
-			{
-				throw new Exception($repository." donesn't have any milestones");
-			}
+			
+			
 		}
 		ksort($ms);
 		foreach ($ms as $name => $data)
